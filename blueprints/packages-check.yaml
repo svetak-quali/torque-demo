@@ -1,0 +1,27 @@
+spec_version: 2-preview
+
+description: simple packages check
+
+inputs:
+  host:
+    type: string
+    display-style: normal
+    default: "eks"
+    description: "Execution host name"
+  service_account:
+    type: string
+    default: "tf-qualidev2-sa"
+    display-style: normal
+    description: "Service account name"
+
+grains:
+  kubectl-cmd:
+    kind: terraform
+    spec:
+      source:
+        path: github.com/johnathanvidu/prod-tests.git//terraform/packages/kubectl
+      host:
+        compute-service: '{{.inputs.host}}'
+        service-account: '{{.inputs.service_account}}'
+      inputs:
+        - SANDBOX_ID: '{{sandboxId}}'
