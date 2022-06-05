@@ -2,11 +2,11 @@ spec_version: 2-preview
 description: Initializing a Jira instance
 
 inputs:
-  compute:
+  host:
     type: string
     display-style: normal
-    default: "on-prem"
-    description: "Compute service"
+    default: "eks"
+    description: "Execution host name"
 
 grains:
   jira:
@@ -15,6 +15,6 @@ grains:
         source:
           path: https://github.com/atlassian/data-center-helm-charts.git//src/main/charts/jira
         host:
-          compute-service: '{{.inputs.compute}}'
+          name: '{{.inputs.host}}'
         commands:
           - "dep up src/main/charts/jira"
