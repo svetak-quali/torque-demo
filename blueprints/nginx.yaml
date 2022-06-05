@@ -1,0 +1,21 @@
+spec_version: 2
+description: Blueprint for bitnami nginx helm chart 
+
+inputs:
+  host:
+    type: string
+    display-style: normal
+    default: "eks"
+    description: "Execution host name"
+
+grains:
+
+  nginx:
+    kind: helm
+    spec:
+      source:
+        path: https://github.com/bitnami/charts.git//bitnami/nginx
+      host:
+        name: '{{.inputs.host}}'
+      commands:
+        - dep up bitnami/nginx
