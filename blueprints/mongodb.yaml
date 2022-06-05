@@ -1,0 +1,121 @@
+spec_version: 2
+description: Blueprint for helm chart mongodb
+inputs:
+  nameOverride:
+    display-style: normal
+  fullnameOverride:
+    display-style: normal
+  namespaceOverride:
+    display-style: normal
+  kubeVersion:
+    display-style: normal
+  clusterDomain:
+    display-style: normal
+    default: cluster.local
+  schedulerName:
+    display-style: normal
+  architecture:
+    display-style: normal
+    default: standalone
+  useStatefulSet:
+    display-style: normal
+    default: false
+  replicaSetName:
+    display-style: normal
+    default: rs0
+  replicaSetHostnames:
+    display-style: normal
+    default: true
+  enableIPv6:
+    display-style: normal
+    default: false
+  directoryPerDB:
+    display-style: normal
+    default: false
+  systemLogVerbosity:
+    display-style: normal
+    default: 0
+  disableSystemLog:
+    display-style: normal
+    default: false
+  disableJavascript:
+    display-style: normal
+    default: false
+  enableJournal:
+    display-style: normal
+    default: true
+  configuration:
+    display-style: normal
+  existingConfigmap:
+    display-style: normal
+  initdbScriptsConfigMap:
+    display-style: normal
+  extraEnvVarsCM:
+    display-style: normal
+  extraEnvVarsSecret:
+    display-style: normal
+  replicaCount:
+    display-style: normal
+    default: 2
+  podManagementPolicy:
+    display-style: normal
+    default: OrderedReady
+  podAffinityPreset:
+    display-style: normal
+  podAntiAffinityPreset:
+    display-style: normal
+    default: soft
+  terminationGracePeriodSeconds:
+    display-style: normal
+  priorityClassName:
+    display-style: normal
+  runtimeClassName:
+    display-style: normal
+  host:
+    type: string
+    display-style: normal
+    default: "eks"
+    description: "Execution host name"
+grains:
+  mongodb:
+    kind: helm
+    spec:
+      source:
+        path: https://github.com/bitnami/charts.git//bitnami/mongodb
+      host:
+        name: '{{ .inputs.host }}'
+        # A service account annotated with a role ARN with permissions to run the asset
+        # service-account: <service-account-name>
+      inputs:
+      - nameOverride: '{{ .inputs.nameOverride }}'
+      - fullnameOverride: '{{ .inputs.fullnameOverride }}'
+      - namespaceOverride: '{{ .inputs.namespaceOverride }}'
+      - kubeVersion: '{{ .inputs.kubeVersion }}'
+      - clusterDomain: '{{ .inputs.clusterDomain }}'
+      - schedulerName: '{{ .inputs.schedulerName }}'
+      - architecture: '{{ .inputs.architecture }}'
+      - useStatefulSet: '{{ .inputs.useStatefulSet }}'
+      - replicaSetName: '{{ .inputs.replicaSetName }}'
+      - replicaSetHostnames: '{{ .inputs.replicaSetHostnames }}'
+      - enableIPv6: '{{ .inputs.enableIPv6 }}'
+      - directoryPerDB: '{{ .inputs.directoryPerDB }}'
+      - systemLogVerbosity: '{{ .inputs.systemLogVerbosity }}'
+      - disableSystemLog: '{{ .inputs.disableSystemLog }}'
+      - disableJavascript: '{{ .inputs.disableJavascript }}'
+      - enableJournal: '{{ .inputs.enableJournal }}'
+      - configuration: '{{ .inputs.configuration }}'
+      - existingConfigmap: '{{ .inputs.existingConfigmap }}'
+      - initdbScriptsConfigMap: '{{ .inputs.initdbScriptsConfigMap }}'
+      - extraEnvVarsCM: '{{ .inputs.extraEnvVarsCM }}'
+      - extraEnvVarsSecret: '{{ .inputs.extraEnvVarsSecret }}'
+      - replicaCount: '{{ .inputs.replicaCount }}'
+      - podManagementPolicy: '{{ .inputs.podManagementPolicy }}'
+      - podAffinityPreset: '{{ .inputs.podAffinityPreset }}'
+      - podAntiAffinityPreset: '{{ .inputs.podAntiAffinityPreset }}'
+      - terminationGracePeriodSeconds: '{{ .inputs.terminationGracePeriodSeconds }}'
+      - priorityClassName: '{{ .inputs.priorityClassName }}'
+      - runtimeClassName: '{{ .inputs.runtimeClassName }}'
+      env-vars: []
+      # Helm commands to run before installing the chart
+      commands:
+      - dep up bitnami/mongodb
