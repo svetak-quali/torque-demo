@@ -1,0 +1,48 @@
+spec_version: 2-preview
+
+description: Oracle compute instance
+
+
+inputs:
+  host:
+    type: string
+    display-style: normal
+    default: "eks"
+    description: "Execution host name"
+  compartment:
+    type: string
+    display-style: normal
+    description: "Compartment"
+  tenancy:
+    type: string
+    display-style: normal
+    description: "Tenancy"    
+  region:
+    type: string
+    display-style: normal
+    description: "Region"    
+  instance_display_name:
+    default: torque-vm
+    type: string
+    display-style: normal
+    description: "Instance display name"    
+    
+outputs:
+  instance_id:
+    value: '{{.grains.OracleInstance.outputs.instance_id}}'
+    
+grains:
+  OracleInstance:
+    kind: terraform
+    spec:
+      source:
+        path: github.com/QualiNext/test-spec2-public.git//terraform/oci-instance
+      host:
+        name: '{{.inputs.host}}'
+      inputs:
+        - compartment_ocid : '{{.inputs.compartment}}'
+        - tenancy_ocid : '{{.inputs.tenancy}}'
+        - region : '{{.inputs.region}}'
+        - instance_display_name : '{{.inputs.instance_display_name}}'
+      ouputs:
+        - instance_id
