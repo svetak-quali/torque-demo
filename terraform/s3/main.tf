@@ -6,6 +6,7 @@ terraform {
     }
   }
 }
+// some comment
 
 provider "aws" {
   region = var.region
