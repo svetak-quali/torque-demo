@@ -9,6 +9,7 @@ terraform {
 
 provider "aws" {
   region = var.region
+  # pending changes test
 }
 
 data "aws_iam_user" "input_user" {
