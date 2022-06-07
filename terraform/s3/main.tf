@@ -9,12 +9,12 @@ terraform {
 
 provider "aws" {
   region = var.region
+  # this is a diff test
 }
 
 data "aws_iam_user" "input_user" {
   count = "${var.user == "none" ? 0 : 1}"
   user_name = var.user
-  # test
 }
 
 resource "aws_s3_bucket" "bucket" {
