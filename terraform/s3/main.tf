@@ -7,6 +7,7 @@ terraform {
   }
 }
 
+# one more line
 provider "aws" {
   region = var.region
 }
@@ -20,7 +21,6 @@ resource "aws_s3_bucket" "bucket" {
   bucket = var.name
   acl    = "public-read"
   force_destroy = true
-  # one more line
 
   tags = {
     Name        = "My bucket"
