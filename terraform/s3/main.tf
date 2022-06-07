@@ -9,7 +9,6 @@ terraform {
 
 provider "aws" {
   region = var.region
-  # this is a diff test
 }
 
 data "aws_iam_user" "input_user" {
@@ -21,6 +20,7 @@ resource "aws_s3_bucket" "bucket" {
   bucket = var.name
   acl    = "public-read"
   force_destroy = true
+  # one more line
 
   tags = {
     Name        = "My bucket"
