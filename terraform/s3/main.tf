@@ -10,7 +10,6 @@ terraform {
 # one more line
 provider "aws" {
   region = var.region
-  # one line
 }
 
 data "aws_iam_user" "input_user" {
@@ -36,6 +35,7 @@ resource "aws_iam_policy" "policy" {
   name        = "s3_access_${var.name}"
   path        = "/"
   description = "Policy to access S3 Module"
+  # one more comment here
 
   # Terraform expression result to valid JSON syntax.
   policy = jsonencode({
