@@ -1,7 +1,13 @@
 spec_version: 2
 description: Simple s3 buckets provisioning
 
-
+inputs:
+  host:
+    type: string
+    display-style: normal
+    default: "dbs"
+    description: "Execution host name"
+    
 outputs:
   bucket_1:
     value: '{{ .grains.bucket_1.outputs.s3_bucket_arn }}'
@@ -16,7 +22,7 @@ grains:
       source:
         path: github.com/QualiNext/torque-demo.git//terraform/s3
       host:
-        name: eks
+        name: '{{ .inputs.host }}'
       inputs:
         - region: us-west-1
         - acl: private
@@ -30,7 +36,7 @@ grains:
       source:
         path: github.com/QualiNext/torque-demo.git//terraform/s3
       host:
-        name: eks
+        name: '{{ .inputs.host }}'
       inputs:
         - region: us-east-1
         - acl: private
