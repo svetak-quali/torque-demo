@@ -14,7 +14,7 @@ grains:
     kind: terraform
     spec: 
       source:
-        path: https://github.com/QualiNext/torque-demo.git//terraform/s3
+        path: github.com/QualiNext/torque-demo.git//terraform/s3
       host:
         name: eks
       inputs:
@@ -28,7 +28,7 @@ grains:
     kind: terraform
     spec: 
       source:
-        path: https://github.com/QualiNext/torque-demo.git//terraform/s3
+        path: github.com/QualiNext/torque-demo.git//terraform/s3
       host:
         name: eks
       inputs:
