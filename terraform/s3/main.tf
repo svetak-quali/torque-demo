@@ -7,9 +7,10 @@ terraform {
   }
 }
 
-# one more line
+
 provider "aws" {
   region = var.region
+  # this is for you Leeor
 }
 
 data "aws_iam_user" "input_user" {
