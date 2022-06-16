@@ -10,10 +10,10 @@ terraform {
 
 provider "aws" {
   region = var.region
-  # this is for you Leeor
 }
 
 data "aws_iam_user" "input_user" {
+  # refactor required here
   count = "${var.user == "none" ? 0 : 1}"
   user_name = var.user
 }
