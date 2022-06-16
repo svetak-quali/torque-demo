@@ -13,7 +13,6 @@ provider "aws" {
 }
 
 data "aws_iam_user" "input_user" {
-  # refactor required here
   count = "${var.user == "none" ? 0 : 1}"
   user_name = var.user
 }
@@ -37,7 +36,7 @@ resource "aws_iam_policy" "policy" {
   path        = "/"
   description = "Policy to access S3 Module"
   # one more comment here
-
+  # refactor required here
   # Terraform expression result to valid JSON syntax.
   policy = jsonencode({
     Version: "2012-10-17",
