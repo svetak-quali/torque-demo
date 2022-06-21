@@ -21,7 +21,6 @@ data "aws_iam_user" "input_user" {
 
 resource "aws_s3_bucket" "bucket" {
   bucket = var.name
-  acl    = "private"
   force_destroy = true
 
   tags = {
@@ -29,6 +28,11 @@ resource "aws_s3_bucket" "bucket" {
     Environment = "Dev"
     AMAZING_TAG = "AMAZING_VALUE"
   }
+}
+
+resource "aws_s3_bucket_acl" "bucket_acl" {
+  bucket = aws_s3_bucket.bucket.id
+  acl    = "private"
 }
 
 resource "aws_iam_policy" "policy" {
