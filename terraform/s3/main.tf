@@ -12,7 +12,6 @@ provider "aws" {
   region = var.region
 }
 
-# CREATE USER and POLICY
 
 data "aws_iam_user" "input_user" {
   count = "${var.user == "none" ? 0 : 1}"
@@ -33,6 +32,7 @@ resource "aws_s3_bucket" "bucket" {
 resource "aws_s3_bucket_acl" "bucket_acl" {
   bucket = aws_s3_bucket.bucket.id
   acl    = "private"
+  # new comment
 }
 
 resource "aws_iam_policy" "policy" {
