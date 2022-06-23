@@ -21,6 +21,7 @@ data "aws_iam_user" "input_user" {
 resource "aws_s3_bucket" "bucket" {
   bucket = var.name
   force_destroy = true
+  # really new comment 2
 
   tags = {
     Name        = "My bucket"
@@ -32,7 +33,6 @@ resource "aws_s3_bucket" "bucket" {
 resource "aws_s3_bucket_acl" "bucket_acl" {
   bucket = aws_s3_bucket.bucket.id
   acl    = "private"
-  # new comment
 }
 
 resource "aws_iam_policy" "policy" {
