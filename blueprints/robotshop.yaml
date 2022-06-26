@@ -63,6 +63,8 @@ grains:
         - region: eu-west-1
         - acl: public-read
         - name: 'robotshop-s3-{{ sandboxid | downcase }}'
+      outputs:
+        - s3_bucket_arn
 
   robotShopMicroservices:
     kind: helm
