@@ -29,6 +29,7 @@ resource "aws_s3_bucket" "bucket" {
   }
 }
 
+# one more comment here
 resource "aws_s3_bucket_acl" "bucket_acl" {
   bucket = aws_s3_bucket.bucket.id
   acl    = "private"
@@ -38,8 +39,7 @@ resource "aws_iam_policy" "policy" {
   count = "${var.user == "none" ? 0 : 1}"
   name        = "s3_access_${var.name}"
   path        = "/"
-  description = "Policy to access S3 Module"
-  # one more comment here
+  description = "Policy to access S3 Module"  
   # refactor required here
   # Terraform expression result to valid JSON syntax.
   policy = jsonencode({
