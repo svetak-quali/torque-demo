@@ -2,6 +2,11 @@ spec_version: 2
 description: Simple s3 buckets provisioning
 
 
+inputs:
+  agent:
+    type: string
+    default: "myk8s"
+
 outputs:
   bucket_1:
     value: '{{ .grains.bucket_1.outputs.s3_bucket_arn }}'
@@ -16,7 +21,7 @@ grains:
       source:
         path: https://github.com/QualiNext/torque-demo.git//terraform/s3
       host:
-        name: k8s
+        name: {{ .inputs.agent }}
       inputs:
         - region: us-west-1
         - acl: private
@@ -30,7 +35,7 @@ grains:
       source:
         path: https://github.com/QualiNext/torque-demo.git//terraform/s3
       host:
-        name: k8s
+        name: {{ .inputs.agent }}
       inputs:
         - region: us-east-1
         - acl: private
