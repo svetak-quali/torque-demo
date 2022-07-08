@@ -17,7 +17,7 @@ data "aws_iam_user" "input_user" {
   count = "${var.user == "none" ? 0 : 1}"
   user_name = var.user
 }
-
+# one more comment here
 resource "aws_s3_bucket" "bucket" {
   bucket = var.name
   force_destroy = true  
@@ -29,7 +29,7 @@ resource "aws_s3_bucket" "bucket" {
   }
 }
 
-# one more comment here
+
 resource "aws_s3_bucket_acl" "bucket_acl" {
   bucket = aws_s3_bucket.bucket.id
   acl    = "private"
