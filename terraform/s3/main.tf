@@ -10,6 +10,7 @@ terraform {
 
 provider "aws" {
   region = var.region
+  #my comment
 }
 
 
@@ -17,7 +18,7 @@ data "aws_iam_user" "input_user" {
   count = "${var.user == "none" ? 0 : 1}"
   user_name = var.user
 }
-# one more comment here
+
 resource "aws_s3_bucket" "bucket" {
   bucket = var.name
   force_destroy = true  
