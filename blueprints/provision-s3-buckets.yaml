@@ -7,7 +7,7 @@ outputs:
   bucket_2:
     value: '{{ .grains.bucket_2.outputs.s3_bucket_arn }}'
 
-
+#change
 grains:
   bucket_1:
     kind: terraform
