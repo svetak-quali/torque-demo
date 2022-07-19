@@ -28,7 +28,7 @@ outputs:
     value: 'robotshop-{{ sandboxid | downcase }}.testquali.click:8080'
   DB_Hostname:
     value: '{{ .grains.mySqlDB.outputs.hostname }}'
-
+#change
 grains:
 
   mySqlDB:
