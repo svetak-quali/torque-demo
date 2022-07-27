@@ -24,9 +24,9 @@ inputs:
 
 
 # values that starts with '{' for liquid template must be encosed with quotes so YAML won't consider them as dict
-# outputs:
-#  result:
-#    value: "{{ .grains.configureService.deploy.commands.execute_algo.output }}"
+outputs:
+  result:
+    value: "{{ .grains.configureService.deploy.commands.execute_algo.output }}"
 
 
 env-vars:
