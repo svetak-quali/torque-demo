@@ -1,0 +1,57 @@
+kind: bluperint 
+spec_version: 2-preview
+description: demo of Task grain
+
+
+inputs:
+  filePath:
+    type: string
+    display-style: normal
+    default: "https://gist.githubusercontent.com/MeirAtWork/b7cd33fe4fa1e30f599e1199587a8da7/raw/2ff145d67ef75bf3d735147f45a28f58d34a0b53/check.py"
+    description: "path to file to download"
+
+  fileName:
+    type: string
+    display-style: normal
+    default: "check.py"
+    description: "the file name"
+
+  mySecondVal:
+    type: string
+    display-style: normal
+    default: "jerusalem"
+    description: "test value"
+
+
+# values that starts with '{' for liquid template must be encosed with quotes so YAML won't consider them as dict
+# outputs:
+#  result:
+#    value: "{{ .grains.configureService.deploy.commands.execute_algo.output }}"
+
+
+env-vars:
+  - name: VAR_NAME1
+    value: value1
+  - name: VAR_NAME2
+    value: "{{ .inputs.mySecondVal }}"
+
+
+grains:
+
+  configureService:
+    kind: shell
+    spec:
+      host:
+        name: kubernetes-testing1
+        # image: http://
+      activities:
+        deploy:
+          commands: 
+            - "apt-get -y install wget"
+            - "wget {{ .inputs.filePath }}"
+            - name: execute_algo
+              command: python3 {{ .inputs.fileName }}
+
+        destroy:
+          commands:
+            - "echo {{ .inputs.mySecondVal }}"
