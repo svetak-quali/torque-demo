@@ -1,4 +1,4 @@
-spec_version: 2-preview
+spec_version: 2
 
 description: simple packages check
 
@@ -21,7 +21,7 @@ grains:
       source:
         path: github.com/johnathanvidu/prod-tests.git//terraform/packages/kubectl
       host:
-        compute-service: '{{.inputs.host}}'
+        name: '{{.inputs.host}}'
         service-account: '{{.inputs.service_account}}'
       inputs:
         - SANDBOX_ID: '{{sandboxId}}'

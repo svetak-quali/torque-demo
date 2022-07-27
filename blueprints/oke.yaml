@@ -44,5 +44,5 @@ grains:
         - tenancy_ocid : '{{.inputs.tenancy}}'
         - region : '{{.inputs.region}}'
         - instance_display_name : '{{.inputs.instance_display_name}}'
-      ouputs:
+      outputs:
         - instance_id

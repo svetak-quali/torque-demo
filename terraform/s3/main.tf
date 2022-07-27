@@ -7,11 +7,12 @@ terraform {
   }
 }
 
-# one more line
+
 provider "aws" {
   region = var.region
-  # one line
+// comment
 }
+
 
 data "aws_iam_user" "input_user" {
   count = "${var.user == "none" ? 0 : 1}"
@@ -20,8 +21,7 @@ data "aws_iam_user" "input_user" {
 
 resource "aws_s3_bucket" "bucket" {
   bucket = var.name
-  acl    = "public-read"
-  force_destroy = true
+  force_destroy = true  
 
   tags = {
     Name        = "My bucket"
@@ -30,13 +30,18 @@ resource "aws_s3_bucket" "bucket" {
   }
 }
 
-# CREATE USER and POLICY
+
+resource "aws_s3_bucket_acl" "bucket_acl" {
+  bucket = aws_s3_bucket.bucket.id
+  acl    = "private"
+}
+
 resource "aws_iam_policy" "policy" {
   count = "${var.user == "none" ? 0 : 1}"
   name        = "s3_access_${var.name}"
   path        = "/"
-  description = "Policy to access S3 Module"
-
+  description = "Policy to access S3 Module"  
+  # refactor required here
   # Terraform expression result to valid JSON syntax.
   policy = jsonencode({
     Version: "2012-10-17",
