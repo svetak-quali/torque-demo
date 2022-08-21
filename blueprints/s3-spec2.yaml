@@ -19,7 +19,7 @@ grains:
       host:
       # Execution Host - the platform where the asset executable will run.
       # For example, a Kubernetes cluster can be used as an execution host.
-        name: ekscfox
+        name: eks
         # A service account annotated with a role ARN with permissions to run the asset
         service-account: oidc
       inputs:
@@ -44,7 +44,7 @@ grains:
       host:
       # Execution Host - the platform where the asset executable will run.
       # For example, a Kubernetes cluster can be used as an execution host.
-        name: ekscfox
+        name: eks
         # A service account annotated with a role ARN with permissions to run the asset
         service-account: oidc
       inputs:
