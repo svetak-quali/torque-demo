@@ -5,7 +5,7 @@ inputs:
   host:
     type: string
     display-style: normal
-    default: "dbs"
+    default: "eks"
     description: "Execution host name"
     
 outputs:
