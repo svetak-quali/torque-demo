@@ -15,7 +15,7 @@ grains:
     kind: terraform
     spec:
       source:
-        path: git::https://fe9479eeb3d036031c152f67ad80b0801363058e@github.com/Chris530906/test.git//terraform/s3bucket
+        path: git::https://github.com/svetak-quali/torque-demo.git//terraform/s3bucket
       host:
       # Execution Host - the platform where the asset executable will run.
       # For example, a Kubernetes cluster can be used as an execution host.
@@ -39,7 +39,7 @@ grains:
     kind: terraform
     spec:
       source:
-        store: testdiscover
+        store: torque-demo
         path: terraform/s3bucket
       host:
       # Execution Host - the platform where the asset executable will run.
