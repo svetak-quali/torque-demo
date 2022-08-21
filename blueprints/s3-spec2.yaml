@@ -21,7 +21,7 @@ grains:
       # For example, a Kubernetes cluster can be used as an execution host.
         name: eks
         # A service account annotated with a role ARN with permissions to run the asset
-        service-account: oidc
+        #service-account: oidc
       inputs:
       - aws_region: '{{ .inputs.aws_region }}'
       - name: '{{ sandboxid | downcase }}'
@@ -46,7 +46,7 @@ grains:
       # For example, a Kubernetes cluster can be used as an execution host.
         name: eks
         # A service account annotated with a role ARN with permissions to run the asset
-        service-account: oidc
+        # service-account: oidc
       inputs:
       - aws_region: '{{ .inputs.aws_region }}'
       - name: '{{ sandboxid | downcase }}-bucket2'
