@@ -44,8 +44,7 @@ grains:
         store: torque-demo
         path: terraform/aws-wordpress
       host:
-        name: demo-dev
-        service-account: torque-dev-sa
+        name: eks
       inputs:
       - DB_NAME: '{{ .inputs.DB_NAME }}'
       - DB_PASS: '{{ .inputs.DB_PASS }}'
