@@ -41,7 +41,7 @@ grains:
     kind: terraform
     spec:
       source:
-        store: assets
+        store: torque-demo
         path: terraform/aws-wordpress
       host:
         name: demo-dev
