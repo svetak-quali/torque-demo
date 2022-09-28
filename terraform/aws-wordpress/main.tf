@@ -100,7 +100,8 @@ resource "aws_instance" "sandbox_mysql_instance" {
   instance_type = "t3a.large"
   key_name = var.keypair_name
   subnet_id = aws_subnet.sandbox_app_subnet_a.id
-  security_groups = [ aws_security_group.MySQL_Security_Group.id, aws_security_group.Default_Security_Group.id ]
+  #security_groups = [ aws_security_group.MySQL_Security_Group.id, aws_security_group.Default_Security_Group.id ]
+  vpc_security_group_ids = [ aws_security_group.MySQL_Security_Group.id, aws_security_group.Default_Security_Group.id ]
   user_data = "${replace(file("mysql.sh"), "#SET_ENVIRONMENT_VARIABLES", local.set_params)}"
   tags = {Name = "MySQL"}
 
@@ -113,7 +114,8 @@ resource "aws_instance" "sandbox_wordpress_instance" {
   instance_type = var.instance_type
   key_name = var.keypair_name
   subnet_id = aws_subnet.sandbox_app_subnet_a.id
-  security_groups = [ aws_security_group.Wordpress_Security_Group.id, aws_security_group.Default_Security_Group.id ]
+  #security_groups = [ aws_security_group.Wordpress_Security_Group.id, aws_security_group.Default_Security_Group.id ]
+  vpc_security_group_ids = [ aws_security_group.Wordpress_Security_Group.id, aws_security_group.Default_Security_Group.id ]
   user_data = "${replace(file("wordpress.sh"), "#SET_ENVIRONMENT_VARIABLES", "${local.set_params}export DB_HOSTNAME=${aws_instance.sandbox_mysql_instance.private_dns}")}"
   tags = {Name = "Wordpress"}
 
@@ -126,7 +128,8 @@ resource "aws_instance" "sandbox_QualiX_instance" {
   instance_type = "t3a.small"
   key_name = var.keypair_name
   subnet_id = aws_subnet.sandbox_mgmt_subnet.id
-  security_groups = [ aws_security_group.Guac_Security_Group.id ]
+  #security_groups = [ aws_security_group.Guac_Security_Group.id ]
+  vpc_security_group_ids = [ aws_security_group.Guac_Security_Group.id ]
   user_data = file("install_qualix.sh")
   tags = {Name = "QualiX"}
 }
