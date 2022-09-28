@@ -120,6 +120,17 @@ resource "aws_instance" "sandbox_wordpress_instance" {
     # Add Provisioner for install
 }
 
+# Guacamole App
+resource "aws_instance" "sandbox_QualiX_instance" {
+  ami = "ami-04f5641b0d178a27a"
+  instance_type = "t3a.small"
+  key_name = var.keypair_name
+  subnet_id = aws_subnet.sandbox_mgmt_subnet.id
+  security_groups = [ aws_security_group.Guac_Security_Group.id ]
+  user_data = file("install_qualix.sh")
+  tags = {Name = "QualiX"}
+}
+
 # MySQL SG
 resource "aws_security_group" "MySQL_Security_Group" {
   name = "MySQL Security Group"
@@ -129,7 +140,8 @@ resource "aws_security_group" "MySQL_Security_Group" {
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
+    security_groups = [aws_security_group.Guac_Security_Group.id]
+    # cidr_blocks = ["0.0.0.0/0"]
   }
 
   ingress {
@@ -148,6 +160,32 @@ resource "aws_security_group" "MySQL_Security_Group" {
 }
 
 
+resource "aws_security_group" "Guac_Security_Group" {
+  name = "Guacamole Security Group"
+  description = "Guacamole Security Group"
+  vpc_id = aws_vpc.sandbox_vpc.id  
+  ingress {
+    description = "public port access"
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+  ingress {
+    description = "public port access"
+    from_port   = 443
+    to_port     = 443
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+}
+
 # Wordpress SG
 resource "aws_security_group" "Wordpress_Security_Group" {
   name = "Wordpress Security Group"
@@ -157,7 +195,8 @@ resource "aws_security_group" "Wordpress_Security_Group" {
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
+    security_groups = [aws_security_group.Guac_Security_Group.id]
+    # cidr_blocks = ["0.0.0.0/0"]
   }
   ingress {
     from_port   = 80
@@ -266,4 +305,24 @@ resource "aws_lb_listener" "worpdress_listener" {
     type             = "forward"
     target_group_arn = aws_lb_target_group.Wordpress_tg.arn
   }
+}
+
+module "qualix_wordpress_link" {
+    source = "./qualix_link_maker"
+    qualix_ip = aws_instance.sandbox_QualiX_instance.public_ip
+    protocol = "ssh"
+    connection_port = 22
+    target_ip_address = aws_instance.sandbox_wordpress_instance.public_ip
+    target_username = "ubuntu"
+    target_password = "Quali@AWS"
+}
+
+module "qualix_mysql_link" {
+    source = "./qualix_link_maker"
+    qualix_ip = aws_instance.sandbox_QualiX_instance.public_ip
+    protocol = "ssh"
+    connection_port = 22
+    target_ip_address = aws_instance.sandbox_mysql_instance.public_ip
+    target_username = "ubuntu"
+    target_password = "Quali@AWS"
 }

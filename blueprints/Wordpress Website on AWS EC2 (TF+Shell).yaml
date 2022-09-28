@@ -1,0 +1,130 @@
+spec_version: 2
+description: Auto generated blueprint for terraform module aws-wordpress
+# blueprint inputs can be provided by the user, API or CI plugin when creating an environment from this blueprint.
+inputs:
+  DB_NAME:
+    type: string
+    default: wordpress_demo
+  DB_PASS:
+    type: string
+    default: 12345
+    sensitive: true
+  DB_USER:
+    type: string
+    default: root
+  aws_region:
+    type: string
+    default: eu-west-1
+  instance_type:
+    type: string
+    default: t3a.medium
+  keypair_name:
+    type: string
+    default: TorqueSandbox
+# blueprint outputs define which data that was generated during environment provisioning will be returned to the user, API or CI.
+outputs:
+  MySQL Instance Public IP:
+    value: '{{ .grains.aws-wordpress.outputs.mysql-ip }}'
+  Wordpress Instance Public IP:
+    value: '{{ .grains.aws-wordpress.outputs.wordpress-ip }}'
+  Wordpress Link:
+    value: '{{ .grains.aws-wordpress.outputs.wordpress-address }}'
+    kind: link
+  Wordpress Server SSH:
+    value: '{{ .grains.aws-wordpress.outputs.wordpress-ssh-link }}'
+    kind: link
+  MySQL Server SSH: 
+    value: '{{ .grains.aws-wordpress.outputs.mysql-ssh-link }}'
+    kind: link
+grains:
+  mysql-logs-bucket:
+    kind: terraform
+    spec: 
+      source:
+        store: assets
+        path: terraform/s3
+      host:
+        name: demo-dev
+        service-account: torque-dev-sa
+      inputs:
+        - region: '{{ .inputs.aws_region }}'
+        - acl: private
+        - name: 'mysql-logs-bucket-{{ sandboxid | downcase }}'
+      outputs:
+        - s3_bucket_arn
+
+  app-logs-bucket:
+    kind: terraform
+    spec: 
+      source:
+        store: assets
+        path: terraform/s3
+      host:
+        name: demo-dev
+        service-account: torque-dev-sa
+      inputs:
+        - region: '{{ .inputs.aws_region }}'
+        - acl: private
+        - name: 'app-logs-bucket-{{ sandboxid | downcase }}'
+      outputs:
+        - s3_bucket_arn
+  
+  aws-wordpress:
+    kind: terraform
+    depends-on: app-logs-bucket, mysql-logs-bucket
+    spec:
+      source:
+        store: assets
+        path: terraform/aws-wordpress
+      host:
+        name: demo-dev
+        service-account: torque-dev-sa
+      inputs:
+      - DB_NAME: '{{ .inputs.DB_NAME }}'
+      - DB_PASS: '{{ .inputs.DB_PASS }}'
+      - DB_USER: '{{ .inputs.DB_USER }}'
+      - aws_region: '{{ .inputs.aws_region }}'
+      - instance_type: '{{ .inputs.instance_type }}'
+      - keypair_name: '{{ .inputs.keypair_name }}'
+      # The environment variables declared in this section will be available during the grain deployment as well as the grain destroy phase
+      # env-vars:
+      # - VAR_NAME: var value
+      env-vars: []
+      outputs:
+      - mysql-ip
+      - wordpress-ip
+      - wordpress-address
+      - wordpress-ssh-link
+      - mysql-ssh-link
+    # The terraform version that will be used to deploy the module
+    tf-version: 1.2.6
+    
+  setup-script:
+    kind: shell
+    depends-on: aws-wordpress
+    spec: 
+      host:
+        name: demo-dev
+        service-account: torque-dev-sa
+      activities:
+        deploy:
+          commands:
+            - "echo setup script is running..."
+        destroy:
+          commands:
+            - "echo destroy activity..."
+            
+  health-checks:
+    kind: shell
+    depends-on: aws-wordpress
+    spec: 
+      host:
+        name: demo-dev
+        service-account: torque-dev-sa
+      activities:
+        deploy:
+          commands:
+            - "echo health-checks are running..."
+        destroy:
+          commands:
+            - "echo destroy activity..."

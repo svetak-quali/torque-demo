@@ -33,3 +33,31 @@ variable keypair_name {
     type = string
     default = "TorqueSandbox"
 }
+
+variable "app_subnet_a_id" {
+  description = "The application subnet ID to deploy QualiX in"
+  type = string  
+}
+
+variable "app_subnet_b_id" {
+  description = "The application subnet ID to deploy QualiX in"
+  type = string  
+}
+
+variable "default_security_group_id" {
+  description = "The default security group created in Sandbox Infra"
+  type = string  
+}
+
+variable "qualix_private_ip" {
+  type = string   
+}
+
+variable "qualix_public_ip" {
+  type = string    
+}
+
+variable "mysql_private_dns" {
+  type = string
+}
+
