@@ -30,7 +30,7 @@ grains:
     kind: blueprint
     spec: 
       source:
-        store: repo
+        store: torque-demo
         path: blueprints
       host:
         name: '{{.inputs.host_name}}'
