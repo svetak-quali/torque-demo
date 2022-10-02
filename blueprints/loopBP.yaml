@@ -1,0 +1,45 @@
+spec_version: 2
+description: Simple s3 buckets provisioning
+
+inputs:
+  bucket_1_name:
+    type: string
+    display-style: normal
+    default: "Bucket1_Name_from_parent"
+    description: "invalid name for bucket edited to test autoupdate"
+  bucket_2_name:
+    type: string
+    display-style: normal
+    default: "Bucket2_Name_from_parent"
+    description: "invalid name for bucket edited to test autoupdate"
+  host_name:
+    type: string
+    display-style: normal
+    default: "eks"
+    description: "execution host name"
+    
+
+outputs:
+  twoGrains1:
+    value: '{{ .grains.loopGrain.outputs.bucket_1 }}'
+  twoGrains2:
+    value: '{{ .grains.loopGrain.outputs.bucket_2 }}'
+    
+grains:
+  loopGrain:
+    kind: blueprint
+    spec: 
+      source:
+        store: repo
+        path: blueprints
+      host:
+        name: '{{.inputs.host_name}}'
+      inputs:
+        - region: us-west-1
+        - acl: private
+        - bucket_1_name: '{{.inputs.bucket_1_name}}'
+        - bucket_2_name: '{{.inputs.bucket_2_name}}'
+        - host_name: '{{.inputs.host_name}}'
+      outputs:
+        - bucket_1
+        - bucket_2

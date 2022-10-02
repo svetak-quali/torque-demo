@@ -1,0 +1,56 @@
+spec_version: 2
+description: Simple s3 buckets provisioning
+
+inputs:
+  bucket_1_name:
+    type: string
+    display-style: normal
+    default: "Bucket1_Deafult_Name"
+    description: "invalid name for bucket edited to test autoupdate"
+  bucket_2_name:
+    type: string
+    display-style: normal
+    default: "Bucket2_Deafult_Name"
+    description: "invalid name for bucket edited to test autoupdate"
+  host_name:
+    type: string
+    display-style: normal
+    default: "space"
+    description: "execution host name"
+
+outputs:
+  bucket_1:
+    value: '{{ .grains.loopGrain.outputs.loopGrain }}'
+  bucket_2:
+    value: '{{ .grains.bucket_2.outputs.s3_bucket_arn }}'
+
+
+grains:
+  loopGrain:
+    kind: blueprint
+    spec: 
+      source:
+        store: repo
+        path: blueprints
+      host:
+        name: '{{.inputs.host_name}}'
+      inputs:
+        - region: us-west-1
+        - acl: private
+        - name: '{{.inputs.bucket_1_name}}'
+      outputs:
+        - loopGrain
+
+  bucket_2:
+    kind: terraform
+    spec: 
+      source:
+        path: https://github.com/QualiNext/torque-demo.git//terraform/s3
+      host:
+        name: '{{.inputs.host_name}}'
+      inputs:
+        - region: us-west-1
+        - acl: private
+        - name: '{{.inputs.bucket_2_name}}'
+      outputs:
+        - s3_bucket_arn
