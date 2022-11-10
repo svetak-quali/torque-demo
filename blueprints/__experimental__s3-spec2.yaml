@@ -1,0 +1,59 @@
+spec_version: 2
+description: Auto generated blueprint for terraform module ssm-only
+# blueprint inputs can be provided by the user, API or CI plugin when creating an environment from this blueprint.
+inputs:
+  aws_region:
+    type: string
+    display-style: normal
+    default: us-west-2
+# blueprint outputs define which data that was generated during environment provisioning will be returned to the user, API or CI.
+outputs:
+  bucketname:
+    value: '{{ .grains.s3bucket.outputs.ssm_value }}'
+grains:
+  s3bucket:
+    kind: terraform
+    spec:
+      source:
+        path: github.com/svetak-quali/torque-demo.git//terraform/s3bucket
+      host:
+      # Execution Host - the platform where the asset executable will run.
+      # For example, a Kubernetes cluster can be used as an execution host.
+        name: eks
+        # A service account annotated with a role ARN with permissions to run the asset
+        #service-account: oidc
+      inputs:
+      - aws_region: '{{ .inputs.aws_region }}'
+      - name: '{{ sandboxid | downcase }}'
+      # The environment variables declared in this section will be available during the grain deployment as well as the grain destroy phase
+      # env-vars:
+      # - name: VAR_NAME
+      #   value: var value
+      env-vars: []
+      outputs:
+      - ssm_value
+    # The terraform version that will be used to deploy the module
+    tf-version: 1.2.3
+
+  s3bucket1:
+    kind: terraform
+    spec:
+      source:
+        store: torque-demo
+        path: terraform/s3bucket
+      host:
+      # Execution Host - the platform where the asset executable will run.
+      # For example, a Kubernetes cluster can be used as an execution host.
+        name: eks
+        # A service account annotated with a role ARN with permissions to run the asset
+        # service-account: oidc
+      inputs:
+      - aws_region: '{{ .inputs.aws_region }}'
+      - name: '{{ sandboxid | downcase }}-bucket2'
+      # The environment variables declared in this section will be available during the grain deployment as well as the grain destroy phase
+      # env-vars:
+      # - name: VAR_NAME
+      #   value: var value
+      env-vars: []
+    # The terraform version that will be used to deploy the module
+    tf-version: 1.2.3
