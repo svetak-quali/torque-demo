@@ -1,0 +1,20 @@
+spec_version: 2
+description: testing sandbox...
+
+inputs:
+  host_name:
+    type: execution-host
+    
+grains:
+  setup:
+    kind: shell
+    spec: 
+      host:
+        name: '{{ .inputs.host_name }}'
+      activities:
+        deploy:
+          commands:
+            - "echo setup script is running..."
+        #destroy:
+          #commands:
+            #- "echo destroy activity..."
