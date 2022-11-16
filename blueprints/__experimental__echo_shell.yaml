@@ -12,9 +12,9 @@ grains:
       host:
         name: '{{ .inputs.host_name }}'
       activities:
-        deploy:
-          commands:
-            - "echo setup script is running..."
-        #destroy:
+        #deploy:
           #commands:
-            #- "echo destroy activity..."
+            #- "echo setup script is running..."
+        destroy:
+          commands:
+            - "echo destroy activity..."
